@@ -5,11 +5,15 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import net.java.nlmp.blog.exception.ResourceNotFoundException;
 import net.java.nlmp.blog.model.Post;
 import net.java.nlmp.blog.payload.PostDto;
+import net.java.nlmp.blog.payload.PostResponse;
 import net.java.nlmp.blog.repository.PostRepository;
 import net.java.nlmp.blog.service.PostService;
 
@@ -69,6 +73,24 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("post","id",id));
         PostDto postDto = mapToDTO(post);
 		return postDto;
+	}
+
+	@Override
+	public PostResponse getPostsUsingPageination(int pageNo, int pageSize) {
+		// TODO Auto-generated method stub
+		Pageable pageable = PageRequest.of(pageNo, pageSize);
+		 Page<Post> post=postRepository.findAll(pageable);
+		 List<Post> listOfPost = post.getContent();
+		 List<PostDto> postDto = post.stream().map(posts -> mapToDTO(posts)).collect(Collectors.toList());
+		 
+		 PostResponse postResponse = new PostResponse();
+		 postResponse.setContent(postDto);
+		 postResponse.setPageNo(post.getNumber());
+		 postResponse.setPageSize(post.getSize());
+		 postResponse.setTotalElements(post.getTotalElements());
+		 postResponse.setTotalPages(post.getTotalPages());
+		 postResponse.setLast(post.isLast());
+		 return postResponse;
 	}
 	
 	
