@@ -1,51 +1,30 @@
 package net.java.nlmp.blog.payload;
 
+import java.util.Set;
+
+import org.antlr.v4.runtime.misc.NotNull;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
 public class PostDto {
 	
 	private long id;
+	
+	@NotEmpty
+	@Size(min = 2,message ="post should have atlest 2 characters")
 	private String title;
+	
+	@NotBlank
+	@Size(min =10,message = "post should have atlest 10 characters")
 	private String description;
+	
+	@NotBlank
 	private String  content;
 	
-	public PostDto() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	public PostDto(long id, String title, String description, String content) {
-		super();
-		this.id = id;
-		this.title = title;
-		this.description = description;
-		this.content = content;
-	}
-	public long getId() {
-		return id;
-	}
-	public String getTitle() {
-		return title;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public String getContent() {
-		return content;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public void setContent(String content) {
-		this.content = content;
-	}
-	
-	
+	private Set<CommentDto> comments;
 
 }

@@ -13,6 +13,10 @@ public interface PostService {
 	
 	PostResponse getPostsUsingPageination(int pageNo, int pageSize);
 	
+	PostResponse getPostsUsingPageination(int pageNo, int pageSize, String sortBy);
+	
 	PostDto getPostById(long id);
+
+	PostResponse getPostsUsingPageination(int pageNo, int pageSize, String sortBy, String sortDir);
 
 }
